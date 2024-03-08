@@ -13,7 +13,7 @@ type Server struct {
 	server *http.Server
 }
 
-var GinServer *Server
+var GinServer *Server = nil
 
 func (s *Server) Stop() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
