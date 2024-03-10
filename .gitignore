@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Projects local ignore
+backend/src/config.yaml
+backend/src/store.db
