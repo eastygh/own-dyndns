@@ -30,6 +30,10 @@ func (s *Server) Stop() {
 	//log.Println("Server exiting")
 }
 
+func Router() *gin.Engine {
+	return GinServer.gin
+}
+
 func Create() {
 	GinServer = &Server{}
 	GinServer.gin = gin.Default()
