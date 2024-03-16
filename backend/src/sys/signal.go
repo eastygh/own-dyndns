@@ -18,7 +18,7 @@ func UntilEndOfDays() {
 		done <- true
 	}()
 	<-done
-	if api.GinServer != nil {
-		api.GinServer.Stop()
+	if api.GetServer() != nil {
+		api.GetServer().Stop()
 	}
 }

@@ -8,17 +8,20 @@ import (
 
 var randomInitToken string = utils.RandomString(30)
 
-func setRouters() {
-
-}
-
-func DoProvision() {
+func isNeedToSetup(panicOnError bool) bool {
 	i, err := repository.GetIntParameter("init")
 	if err != nil {
 		log.Error().Err(err)
-		panic("Can't instance check")
+		if panicOnError {
+			panic("Can't instance check")
+		}
+		i = 0
 	}
-	if i == 0 {
+	return i == 0
+}
+
+func DoProvision() {
+	if isNeedToSetup(true) {
 		// Do init job
 		setRouters()
 		log.Info().Msgf("Initialization token %s", randomInitToken)

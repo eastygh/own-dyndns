@@ -2,18 +2,28 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"net/http"
+	"src/config"
 	"time"
 )
 
 type Server struct {
-	gin    *gin.Engine
-	server *http.Server
+	gin      *gin.Engine
+	defGroup *gin.RouterGroup
+	server   *http.Server
 }
 
-var GinServer *Server = nil
+var ginServer *Server = nil
+
+func createEngine() *gin.Engine {
+	g := gin.Default()
+	engine := gin.New()
+	engine.Use(gin.Logger(), gin.Recovery())
+	return g
+}
 
 func (s *Server) Stop() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -30,26 +40,34 @@ func (s *Server) Stop() {
 	//log.Println("Server exiting")
 }
 
-func Router() *gin.Engine {
-	return GinServer.gin
+// Router return default router group starting with prefix - BasePath
+func Router() *gin.RouterGroup {
+	return ginServer.defGroup
+}
+
+// GetServer return Server struct
+func GetServer() *Server {
+	return ginServer
 }
 
 func Create() {
-	GinServer = &Server{}
-	GinServer.gin = gin.Default()
-	GinServer.server = &http.Server{
-		Addr:    ":8080",
-		Handler: GinServer.gin,
+	ginServer = &Server{}
+	conf := config.Get().Server
+	ginServer.gin = createEngine()
+	ginServer.defGroup = ginServer.gin.Group(conf.BasePath)
+	ginServer.server = &http.Server{
+		Addr:    fmt.Sprintf(":%d", conf.Port),
+		Handler: ginServer.gin,
 	}
 }
 
 func Start() {
-	if GinServer == nil {
+	if ginServer == nil {
 		log.Fatal().Msg("No API server created")
 		panic("No API Server")
 	}
 	go func() {
-		err := GinServer.server.ListenAndServe()
+		err := ginServer.server.ListenAndServe()
 		if err != nil {
 			return
 		}

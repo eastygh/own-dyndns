@@ -11,7 +11,8 @@ import (
 )
 
 type Cfg struct {
-	Db DB `json:"db" yaml:"db"`
+	Server Server `json:"server" yaml:"server"`
+	Db     DB     `json:"db" yaml:"db"`
 }
 
 var cfgInstance *Cfg = nil
