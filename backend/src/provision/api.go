@@ -21,6 +21,7 @@ func createAdmin(c *gin.Context) {
 		return
 	}
 	log.Debug().Msgf("Data %+v", admin)
+	c.JSON(422, utils.ApiError{Code: 0, Message: "Ok"})
 }
 
 func setRouters() {
