@@ -1,13 +1,29 @@
 -- +goose Up
 create table od_user
 (
-    id       integer not null
+    id       integer             not null
         constraint user_pk
             primary key autoincrement,
-    login    text    not null,
-    password TEXT    not null,
-    active   integer default 0
+    login    TEXT collate NOCASE not null,
+    password TEXT                not null,
+    active   integer default 0,
+    UNIQUE (login COLLATE NOCASE)
 );
+
+create table od_role
+(
+    id        integer             not null
+        constraint role_pk
+            primary key autoincrement,
+    role_name TEXT collate NOCASE not null
+        constraint role_uk
+            unique,
+    role_desc TEXT
+);
+
+insert into od_role (role_name, role_desc) values ('suPer_admin','Super admin of Own DynDNS application');
+insert into od_role (role_name, role_desc) values ('doMain_admin','Admin of some serv domain');
+insert into od_role (role_name, role_desc) values ('domain_updater','Role for dynamic domain updater');
 
 create table od_parameter
 (
@@ -20,7 +36,7 @@ create table od_parameter
 );
 
 insert into od_parameter (name, value_int)
-values ("init", 0);
+values ('init', 0);
 
 -- +goose Down
 DROP TABLE od_user;
