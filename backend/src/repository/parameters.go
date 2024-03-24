@@ -16,7 +16,7 @@ func GetIntParameterOrZero(key string) int {
 }
 
 func GetStrParameter(key string) (string, error) {
-	sql := `select value_int from od_parameter where name=?`
+	sql := `select value_str from od_parameter where name=?`
 	return db.GetSingleString(db.Get().QueryRow(sql, strings.ToLower(key)))
 }
 
