@@ -21,8 +21,8 @@ create table od_role
     role_desc TEXT
 );
 
-insert into od_role (role_name, role_desc) values ('suPer_admin','Super admin of Own DynDNS application');
-insert into od_role (role_name, role_desc) values ('doMain_admin','Admin of some serv domain');
+insert into od_role (role_name, role_desc) values ('super_admin','Super admin of Own DynDNS application');
+insert into od_role (role_name, role_desc) values ('domain_admin','Admin of some serv domain');
 insert into od_role (role_name, role_desc) values ('domain_updater','Role for dynamic domain updater');
 
 create table od_parameter
